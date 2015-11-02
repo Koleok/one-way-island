@@ -82,7 +82,7 @@ Template.d3_template.onRendered(function () {
         .nodes(cities)
         .links(links)
         .size([width, height])
-        .linkDistance(l => l.distance * 25)
+        .linkDistance(l => l.distance * 20)
         .charge(-2000)
         .on('tick', () => {
             path.attr('d', linkArc);
