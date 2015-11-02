@@ -6,23 +6,39 @@
 </body>
 
 <template name="d3_template">
-    <div class="container">
-        <div class="jumbotron text-center">
-            {{#if route.source}}
+    <div class="jumbotron text-center">
+        {{#if route.source}}
             <h1>{{route.source.name}} to {{route.target.name}}</h1>
-            {{else}}
+            {{#if pathDist}} <p>Total Distance: {{pathDist}}<small><em>mi</em></small></p> {{/if}}
+        {{else}}
             <h1>Select two cities</h1>
-            {{/if}}
-
-            {{#if path}}
-                {{#each path}}
-                    <p>{{this.source}} --> {{this.target}} <em>({{this.distance}}mi)</em></p> 
-                {{/each}}
-            {{/if}}
-
-            {{#if pathDist}}
-                <p>Total Distance {{pathDist}}</p>
-            {{/if}}
-        </div>
+        {{/if}}
     </div>
+    <div class="stats container">
+        {{#if path}}
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Stop Number</th>
+                    <th>Start</th>
+                    <th>Stop</th>
+                    <th>Distance <small><em>(mi)</em></small></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each path}}
+                <tr>
+                    <td>{{@index}}</td>
+                    <td>{{this.source}}</td>
+                    <td>{{this.target}}</td>
+                    <td>{{this.distance}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        </div>
+        {{/if}}
+    </div>
+    <div class="svg_container"> </div>
 </template>

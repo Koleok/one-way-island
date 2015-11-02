@@ -1,3 +1,6 @@
+/******************************************************************
+ *  Runs once when the template is created
+ *****************************************************************/
 Template.d3_template.onCreated(function () {
     this.selectedCities = new ReactiveVar([]);
     this.path = new ReactiveVar();
@@ -45,15 +48,14 @@ Template.d3_template.onCreated(function () {
 
             this.path.set(closed.reverse());
         }
-
-        // Meteor.call('findPath', {
-        //     origin: route.source,
-        //     dest: route.target
-        // });
     }
 });
 
+/******************************************************************
+ *  Runs once when the template is rendered
+ *****************************************************************/
 Template.d3_template.onRendered(function () {
+    console.log('Rendering scene...');
     let width = $(window).width(),
         height = $(window).height() - 170;
 
@@ -71,7 +73,7 @@ Template.d3_template.onRendered(function () {
         .nodes(cities)
         .links(links)
         .size([width, height])
-        .linkDistance(l => l.distance * 20)
+        .linkDistance(l => l.distance * 30)
         .charge(-1200)
         .on('tick', () => {
             path.attr('d', linkArc);
@@ -79,7 +81,7 @@ Template.d3_template.onRendered(function () {
         })
         .start();
 
-    let svg = d3.select('body').append('svg')
+    let svg = d3.select('.svg_container').append('svg')
         .attr('width', width)
         .attr('height', height);
 
@@ -212,12 +214,6 @@ Template.d3_template.onRendered(function () {
             target: l.target.name
         }) === undefined)
             .classed('selected', false);
-
-        // links.each((l, i) => {
-        //     console.log(l);
-        // });
-        // link.filter(l => )
-        //     .classed('selected', true);
     });
 
     this.autorun(() => {
@@ -230,6 +226,9 @@ Template.d3_template.onRendered(function () {
     });
 });
 
+/******************************************************************
+ *
+ *****************************************************************/
 Template.d3_template.helpers({
     route: function () {
         return Template.instance().route();
@@ -241,14 +240,7 @@ Template.d3_template.helpers({
 
     pathDist: function () {
         return Template.instance().pathDist.get();
-    },
-
-    serverCall: ReactivePromise((field1, field2) => {
-        //   return Meteor.promise("addSleep", value1, value2);
-        // }, "loading...")
-
-        return 'test';
-    }, "loading...")
+    }
 });
 
 Template.d3_template.events({});

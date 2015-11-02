@@ -3,11 +3,6 @@ body{
   background-image:url('images/bg.png');
 }
 
-.jumbotron{
-  /*background-image:url('images/bg.png');*/
-  /*background: #fff;*/
-}
-
 .link {
   fill: none;
   stroke: #666;
@@ -17,6 +12,7 @@ body{
 .link.selected {
   stroke: green;
   stroke-dasharray: 0,2 1;
+  stroke-width: 3px;
 }
 
 circle {
