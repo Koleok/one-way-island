@@ -171,6 +171,8 @@ I am now completely in love with this library. I had come across it many times i
 	- On the bright side, I did learn a whole heck of a lot by searching through lots of plain-text courses published by colleges on the topics of *pathfinding* and *graph traversal*.
 
 - On **stretch objectives**
-	- Basically, if there is any conceivable way to justify going to extra mile without costing someone money or time, my preference is to do it. I completely love delving into the unknown like this and later bubbling back up to the surface with cool new knowledge and skills.	
+	- Basically, if there is any conceivable way to justify going to extra mile without costing someone money or time, my preference is to do it. I completely love delving into the unknown like this and later bubbling back up to the surface with cool new knowledge and skills.
+
+    - Since I was unable to find a module that truly fit the primitive *state space* pathfinding in this project, I am going to to build an *a-star-primitive* npm module and corresponding meteor package to handle these situations on future projects, again I like finding an excuse to do this :)
 
  
