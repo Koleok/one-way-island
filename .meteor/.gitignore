@@ -1,2 +1,7 @@
-local
+local/build
+local/bundler-cache
+local/isopacks
+local/plugin-cache
+local/shell
+
 .DS_Store
