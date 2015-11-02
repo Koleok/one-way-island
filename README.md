@@ -34,7 +34,7 @@ An exercise in pathfinding
 
 `cd one-way-island`
 
-**run the project**
+**start the app**
 
 `meteor`
 
