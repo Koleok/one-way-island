@@ -1,0 +1,28 @@
+<head>
+  <title>Kickshaw Island LTD.</title>
+</head>
+<body>
+    {{> d3_template}}
+</body>
+
+<template name="d3_template">
+    <div class="container">
+        <div class="jumbotron text-center">
+            {{#if route.source}}
+            <h1>{{route.source.name}} to {{route.target.name}}</h1>
+            {{else}}
+            <h1>Select two cities</h1>
+            {{/if}}
+
+            {{#if path}}
+                {{#each path}}
+                    <p>{{this.source}} --> {{this.target}} <em>({{this.distance}}mi)</em></p> 
+                {{/each}}
+            {{/if}}
+
+            {{#if pathDist}}
+                <p>Total Distance {{pathDist}}</p>
+            {{/if}}
+        </div>
+    </div>
+</template>
