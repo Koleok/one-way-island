@@ -6,6 +6,9 @@ Template.d3_template.onCreated(function () {
     this.path = new ReactiveVar();
     this.pathDist = new ReactiveVar();
 
+    /******************************************************************
+     *  Sets the current proposed route for reactive rendering
+     *****************************************************************/
     this.route = () => {
         let routeArr = this.selectedCities.get();
         let [source, target] = routeArr;
@@ -16,6 +19,12 @@ Template.d3_template.onCreated(function () {
         } : null;
     }
 
+    /******************************************************************
+     * Solves for shortest path between two selected cities
+     *
+     *   - Rough attempt at adapting what I could find on
+     *     'a-star' and 'best-first' type graph traversal algorithms.
+     *****************************************************************/
     this.getPath = () => {
         let route = this.route();
 
@@ -39,7 +48,6 @@ Template.d3_template.onCreated(function () {
                 });
 
                 nextRoute = match || _.min(routesIn, 'distance');
-
                 console.log(nextRoute.distance);
 
                 nextCity = nextRoute.sourceCity();
@@ -55,6 +63,7 @@ Template.d3_template.onCreated(function () {
  *  Runs once when the template is rendered
  *****************************************************************/
 Template.d3_template.onRendered(function () {
+
     console.log('Rendering scene...');
     let width = $(window).width(),
         height = $(window).height() - 170;
@@ -73,8 +82,8 @@ Template.d3_template.onRendered(function () {
         .nodes(cities)
         .links(links)
         .size([width, height])
-        .linkDistance(l => l.distance * 30)
-        .charge(-1200)
+        .linkDistance(l => l.distance * 25)
+        .charge(-2000)
         .on('tick', () => {
             path.attr('d', linkArc);
             node.attr('transform', transform);
@@ -120,6 +129,10 @@ Template.d3_template.onRendered(function () {
         .attr('dy', '.35em')
         .text(n => n.name);
 
+    /******************************************************************
+     *  Maintains an array of 0 to 2 selected cities that constitue
+     *  a proposed route to solve
+     *****************************************************************/
     let setCitySelection = city => {
         let selection = this.selectedCities.get(),
             newSel = Cities.findOne({
@@ -136,6 +149,9 @@ Template.d3_template.onRendered(function () {
         this.selectedCities.set(selection);
     }
 
+    /******************************************************************
+     * Routes native d3 click event to custom handler
+     *****************************************************************/
     function click(instance) {
         setCitySelection(
             d3.select(this).attr('city')
@@ -153,6 +169,12 @@ Template.d3_template.onRendered(function () {
         return `translate(${d.x},${d.y})`;
     }
 
+    /******************************************************************
+     * Runs whenever a city node is selected or de-selected
+     *  - Sets or negates a 'selected' class by selection
+     *  - forces the node circle to increase in diameter
+     *  - scoots text over to make room for larger circle
+     *****************************************************************/
     this.autorun(() => {
         let cities = this.selectedCities.get();
 
@@ -193,8 +215,14 @@ Template.d3_template.onRendered(function () {
         this.getPath();
     });
 
+    /******************************************************************
+     * Runs when a valid path is found between two cities
+     *  - Sets a 'selected' class on all routes included in the solution
+     *  - Updates the total distance reactive template var
+     *****************************************************************/
     this.autorun(() => {
         let path = this.path.get(),
+            distances = _.pluck(path, 'distance'),
             pathPoints = _.map(path, p => {
                 return {
                     source: p.source,
@@ -202,6 +230,10 @@ Template.d3_template.onRendered(function () {
                 };
             }),
             links = d3.selectAll('.link');
+
+        this.pathDist.set(
+            _.reduce(distances, (total, d) => total + d)
+        );
 
         links.filter(l => _.findWhere(pathPoints, {
             source: l.source.name,
@@ -215,19 +247,11 @@ Template.d3_template.onRendered(function () {
         }) === undefined)
             .classed('selected', false);
     });
-
-    this.autorun(() => {
-        let path = this.path.get(),
-            distances = _.pluck(path, 'distance');
-
-        this.pathDist.set(
-            _.reduce(distances, (total, d) => total + d)
-        );
-    });
 });
 
 /******************************************************************
- *
+ * These are used to reactively re-render dom elements
+ * in the template
  *****************************************************************/
 Template.d3_template.helpers({
     route: function () {
@@ -242,5 +266,3 @@ Template.d3_template.helpers({
         return Template.instance().pathDist.get();
     }
 });
-
-Template.d3_template.events({});

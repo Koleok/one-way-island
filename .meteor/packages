@@ -20,9 +20,6 @@ autopublish             # Publish all data to the clients (for prototyping)
 insecure                # Allow all DB writes from clients (for prototyping)
 d3js:d3
 erasaur:meteor-lodash
-koleokandromeda:a-star
 reactive-var
 twbs:bootstrap
-okgrow:promise
 dburles:collection-helpers
-patrickml:collection-methods
