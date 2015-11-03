@@ -4,6 +4,7 @@
 Template.d3_template.onCreated(function () {
     this.selectedCities = new ReactiveVar([]);
     this.path = new ReactiveVar();
+    this.pathError = new ReactiveVar();
     this.pathDist = new ReactiveVar();
 
     /******************************************************************
@@ -38,6 +39,12 @@ Template.d3_template.onCreated(function () {
                 nextRoute = {};
 
             while (!_.isMatch(source, nextCity)) {
+
+                if (closed.length > 0 && _.isMatch(target, nextCity)) {
+                    this.pathError.set(true);
+                    return;
+                }
+
                 console.log(nextCity);
                 let routesIn = Routes.find({
                     target: nextCity.name
@@ -48,9 +55,13 @@ Template.d3_template.onCreated(function () {
                 });
 
                 nextRoute = match || _.min(routesIn, 'distance');
-                console.log(nextRoute.distance);
+                if (typeof (nextRoute.sourceCity) == 'function') {
+                    nextCity = nextRoute.sourceCity();
+                } else {
+                    this.pathError.set(true);
+                    return;
+                }
 
-                nextCity = nextRoute.sourceCity();
                 closed.push(nextRoute);
             }
 
@@ -212,7 +223,12 @@ Template.d3_template.onRendered(function () {
                 .attr('r', selected ? 9 : 6);
         });
 
+        this.pathError.set(false);
         this.getPath();
+    });
+
+    this.autorun(() => {
+        console.log(this.pathError.get());
     });
 
     /******************************************************************
@@ -260,6 +276,10 @@ Template.d3_template.helpers({
 
     path: function () {
         return Template.instance().path.get();
+    },
+
+    pathError: function () {
+        return Template.instance().pathError.get();
     },
 
     pathDist: function () {

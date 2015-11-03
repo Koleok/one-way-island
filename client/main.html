@@ -9,36 +9,48 @@
     <div class="jumbotron text-center">
         {{#if route.source}}
             <h1>{{route.source.name}} to {{route.target.name}}</h1>
-            {{#if pathDist}} <p>Total Distance: {{pathDist}}<small><em>mi</em></small></p> {{/if}}
+            {{#if pathDist}}
+                {{#unless pathError}}
+                    <p>Total Distance: {{pathDist}}<small><em>mi</em></small></p> 
+                {{/unless}}
+            {{/if}}
         {{else}}
             <h1>Select two cities</h1>
         {{/if}}
     </div>
     <div class="stats container">
         {{#if path}}
-        <div class="table-responsive">
-          <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Stop Number</th>
-                    <th>Start</th>
-                    <th>Stop</th>
-                    <th>Distance <small><em>(mi)</em></small></th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each path}}
-                <tr>
-                    <td>{{@index}}</td>
-                    <td>{{this.source}}</td>
-                    <td>{{this.target}}</td>
-                    <td>{{this.distance}}</td>
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
+            {{#if pathError}}
+                <div class="alert alert-danger text-center" role="alert">
+                    <strong>Path error</strong>
+                    <p>A weakness in the search algorithm has either caused an endless loop, or a dead end has been found.</p>
+                    <p>Gotta fix this!</p>
+                </div>
+            {{else}}
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Stop Number</th>
+                        <th>Start</th>
+                        <th>Stop</th>
+                        <th>Distance <small><em>(mi)</em></small></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each path}}
+                    <tr>
+                        <td>{{@index}}</td>
+                        <td>{{this.source}}</td>
+                        <td>{{this.target}}</td>
+                        <td>{{this.distance}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
         </div>
         {{/if}}
-    </div>
-    <div class="svg_container"> </div>
+    {{/if}}
+</div>
+<div class="svg_container"> </div>
 </template>
