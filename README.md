@@ -166,7 +166,7 @@ I am now completely in love with this library. I had come across it many times i
 ###Reflecting on initial impressions
 
 - On existing code re-use
-	- Regardless of my note taking on this topic, the problem was solved for by way of how very little I could find on the internet in my first few hours of searching, that related **directly** to solving a problem of this description. Therefore there is essentially no code re-use in the code other than what I was able to glean from mbostock's now famous [mobile patent suits](http://bl.ocks.org/mbostock/1153292) d3 code.
+	- Regardless of my note taking on this topic, the decision was made for me by way of how very little I could find on the internet that related **directly** to solving a problem of this description. Therefore there is essentially no code re-use other than what I was able to glean from mbostock's now famous [mobile patent suits](http://bl.ocks.org/mbostock/1153292) d3 code.
 
 	- On the bright side, I did learn a whole heck of a lot by searching through lots of plain-text courses published by colleges on the topics of *pathfinding* and *graph traversal*.
 
